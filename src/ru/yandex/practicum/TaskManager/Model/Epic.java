@@ -10,8 +10,8 @@ public class Epic extends Task {
         super(taskName, description, id, status);
     }
 
-    public Epic(String taskName, String description, TaskStatus status) {
-        super(taskName, description, status);
+    public Epic(String taskName, String description) {
+        super(taskName, description, TaskStatus.NEW);
     }
 
 
@@ -37,9 +37,7 @@ public class Epic extends Task {
         subTaskList.add(subTask);
     }
 
-
-    @Override
-    public TaskStatus getStatus() {
+    public TaskStatus statusCalculation() {
         int i = 0;
         int j = 0;
 
