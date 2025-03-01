@@ -3,10 +3,10 @@ package ru.yandex.practicum.TaskManager.Model;
 import java.util.Objects;
 
 public class Task {
-    private String taskName;
-    private String description;
-    private int id;
-    private TaskStatus status;
+    protected String taskName;
+    protected String description;
+    protected int id;
+    protected TaskStatus status;
 
     public Task (String taskName, String description, int id, TaskStatus status) {
         this.taskName = taskName;
@@ -15,10 +15,10 @@ public class Task {
         this.status = status;
     }
 
-    public Task (String taskName, String description, int id) {
+    public Task (String taskName, String description, TaskStatus status) {
         this.taskName = taskName;
         this.description = description;
-        this.id = id;
+        this.status = status;
     }
 
     public TaskStatus getStatus() {
@@ -29,7 +29,7 @@ public class Task {
         this.status = status;
     }
 
-    public int getId() {
+    public int getTaskId() {
         return id;
     }
 
@@ -66,7 +66,7 @@ public class Task {
         return "Задача{" +
                 "Название задачи:'" + getTaskName() + '\'' +
                 ", Описание задачи:'" + getDescription() + '\'' +
-                ", id: " + getId() + '\'' +
+                ", id: " + getTaskId() + '\'' +
                 ", Статус задачи: " + getStatus() + '\'' +
                 '}';
     }

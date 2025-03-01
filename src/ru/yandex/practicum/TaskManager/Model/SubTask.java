@@ -1,14 +1,19 @@
 package ru.yandex.practicum.TaskManager.Model;
 
 public class SubTask extends Task {
-    private Epic epic;
+    protected int epicId;
 
-    public SubTask(String taskName, String description, int id, TaskStatus status, Epic epic) {
+    public SubTask(String taskName, String description, int id, TaskStatus status, int epicId) {
         super(taskName, description, id, status);
-        this.epic = epic;
+        this.epicId = epicId;
     }
 
-    public Epic getEpic() {
-        return epic;
+    public SubTask(String taskName, String description, TaskStatus status, int epicId) {
+        super(taskName, description, status);
+        this.epicId = epicId;
+    }
+
+    public int getEpicId() {
+        return epicId;
     }
 }

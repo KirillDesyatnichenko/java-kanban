@@ -6,18 +6,37 @@ public class Epic extends Task {
 
     private ArrayList<SubTask> subTaskList = new ArrayList<>();
 
-    public Epic(String taskName, String description, int id) {
-        super(taskName, description, id);
+    public Epic(String taskName, String description, int id, TaskStatus status) {
+        super(taskName, description, id, status);
+    }
+
+    public Epic(String taskName, String description, TaskStatus status) {
+        super(taskName, description, status);
     }
 
 
     public ArrayList<SubTask> getSubTasks() {
-        return subTaskList;
+        return new ArrayList<>(subTaskList);
     }
 
-    public void setSubTask(ArrayList<SubTask> subTask) {
-        this.subTaskList = subTask;
+    public void deleteSubTaskById(int id) {
+        for (int i = 0; i < subTaskList.size(); i++) {
+            SubTask subTask = subTaskList.get(i);
+            if (subTask.getTaskId() == id) {
+                subTaskList.remove(i);
+                break;
+            }
+        }
     }
+
+    public void subTaskListCleaning () {
+        subTaskList.clear();
+    }
+
+    public void addNewSubTask(SubTask subTask) {
+        subTaskList.add(subTask);
+    }
+
 
     @Override
     public TaskStatus getStatus() {
