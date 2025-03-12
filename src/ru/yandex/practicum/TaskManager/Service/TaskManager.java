@@ -5,12 +5,13 @@ import ru.yandex.practicum.TaskManager.Model.SubTask;
 import ru.yandex.practicum.TaskManager.Model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     // Методы для задач.
     Task createNewTask(Task task);
 
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
     void tasksCleaning();
 
@@ -23,7 +24,7 @@ public interface TaskManager {
     // Методы для эпиков
     Epic createNewEpic(Epic epic);
 
-    ArrayList<Epic> getAllEpic();
+    List<Epic> getAllEpic();
 
     void epicCleaning();
 
@@ -36,7 +37,7 @@ public interface TaskManager {
     // Методы для подзадач
     SubTask createNewSubTask(SubTask subTask);
 
-    ArrayList<SubTask> getAllSubTasks();
+    List<SubTask> getAllSubTasks();
 
     void subTasksCleaning();
 
@@ -46,5 +47,7 @@ public interface TaskManager {
 
     void updateSubTask(SubTask subTask);
 
-    ArrayList<SubTask> getSubTasksByEpicId(int epicId);
+    List<SubTask> getSubTasksByEpicId(int epicId);
+
+    List<Task> getHistory();
 }

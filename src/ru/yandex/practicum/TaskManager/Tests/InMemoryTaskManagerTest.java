@@ -100,7 +100,7 @@ class InMemoryTaskManagerTest {
         assertEquals(TaskStatus.DONE, actualTask.getStatus(), "Статус новой задачи ошибочен");
 
         manager.deleteTaskById(1);
-        assertFalse(manager.getTasks().containsKey(1),"Задача не удалена");
+        assertFalse(manager.containsTask(1),"Задача не удалена");
     }
 
     @Test
@@ -158,13 +158,13 @@ class InMemoryTaskManagerTest {
         assertEquals(TaskStatus.DONE, actualEpic.getStatus(), "Статус эпика после апдейта подзадачи не верен");
 
         manager.deleteEpicById(4);
-        assertFalse(manager.getEpics().containsKey(2),"Эпик не удалён");
-        assertFalse(manager.getSubTasks().containsKey(5),"Подзадача 1 эпика не удалена");
-        assertFalse(manager.getSubTasks().containsKey(6),"Подзадача 2 эпика не удалена");
+        assertFalse(manager.containsEpic(2),"Эпик не удалён");
+        assertFalse(manager.containsSubTasks(5),"Подзадача 1 эпика не удалена");
+        assertFalse(manager.containsSubTasks(6),"Подзадача 2 эпика не удалена");
 
         manager.deleteSubTaskById(3);
         assertFalse(actualEpic.getSubTasks().contains(SubTask3),"Подзадача 3 из списка эпика не удалена");
-        assertFalse(manager.getSubTasks().containsKey(3),"Подзадача 3 эпика не удалена");
+        assertFalse(manager.containsSubTasks(3),"Подзадача 3 эпика не удалена");
     }
 
     @Test

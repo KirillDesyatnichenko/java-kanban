@@ -22,24 +22,25 @@ class InMemoryHistoryManagerTest {
         SubTask epic1SubTask1 = manager.createNewSubTask(new SubTask("Subtask 1", "S1", 3, TaskStatus.NEW, 2));
 
         manager.getTaskById(1);
-        List<Task> history = manager.getHistoryManager().getHistory();
+        List<Task> history = manager.getHistory();
         assertNotNull(history, "Список истории не инициализирован");
         assertEquals(task1, history.getFirst(), "В историю добавлена ошибочная задача");
         assertTrue(history.size() == 1, "Ошибочное количество задач");
 
         manager.getSubTaskById(3);
         manager.getEpicById(2);
-        assertTrue(history.contains(task1), "Не сохранена предыдущя версия задачи и её данных");
-        assertEquals(epic1SubTask1, history.get(1), "В историю добавлена ошибочная задача");
-        assertEquals(epic1, history.get(2), "В историю добавлена ошибочная задача");
-        assertTrue(history.size() == 3, "Ошибочное количество задач");
+        List<Task> history1 = manager.getHistory();
+        assertTrue(history1.contains(task1), "Не сохранена предидущая версия задачи и её данных");
+        assertEquals(epic1SubTask1, history1.get(1), "В историю добавлена ошибочная задача");
+        assertEquals(epic1, history1.get(2), "В историю добавлена ошибочная задача");
+        assertTrue(history1.size() == 3, "Ошибочное количество задач");
 
         for (int i = 1; i < 5; i++) {
             manager.getTaskById(1);
             manager.getSubTaskById(3);
             manager.getEpicById(2);
         }
-
-        assertTrue(history.size() == 10, "количество задач превышает 10");
+        List<Task> history2 = manager.getHistory();
+        assertTrue(history2.size() == 10, "количество задач превышает 10");
     }
 }

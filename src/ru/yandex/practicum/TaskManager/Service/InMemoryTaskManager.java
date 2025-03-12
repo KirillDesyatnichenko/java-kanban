@@ -7,12 +7,14 @@ import ru.yandex.practicum.TaskManager.Model.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private Map<Integer, Task> tasks = new HashMap<>();
+    private Map<Integer, Epic> epics = new HashMap<>();
+    private Map<Integer, SubTask> subTasks = new HashMap<>();
 
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
@@ -217,19 +219,20 @@ public class InMemoryTaskManager implements TaskManager {
         return epics.get(epicId).getSubTasks();
     }
 
-    public HistoryManager getHistoryManager() {
-        return historyManager;
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
+    public boolean containsTask(int id) {
+        return tasks.containsKey(id);
     }
 
-    public HashMap<Integer, Epic> getEpics() {
-        return epics;
+    public boolean containsEpic(int id) {
+        return epics.containsKey(id);
     }
 
-    public HashMap<Integer, SubTask> getSubTasks() {
-        return subTasks;
+    public boolean containsSubTasks(int id) {
+        return subTasks.containsKey(id);
     }
 }
