@@ -1,4 +1,4 @@
-package ru.yandex.practicum.TaskManager.Tests;
+package ru.yandex.practicum.TaskManager.Test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
