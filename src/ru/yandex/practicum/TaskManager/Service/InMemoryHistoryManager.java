@@ -21,7 +21,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             return taskList;
         }
 
-        while(nodeIterator != null) {
+        while (nodeIterator != null) {
             taskList.add(nodeIterator.task);
             nodeIterator = nodeIterator.next;
         }
