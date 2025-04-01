@@ -1,5 +1,6 @@
 package ru.yandex.practicum.TaskManager.Tests;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.TaskManager.Model.Epic;
 import ru.yandex.practicum.TaskManager.Model.SubTask;
@@ -25,7 +26,7 @@ class InMemoryHistoryManagerTest {
         List<Task> history = manager.getHistory();
         assertNotNull(history, "Список истории не инициализирован");
         assertEquals(task1, history.getFirst(), "В историю добавлена ошибочная задача");
-        assertTrue(history.size() == 1, "Ошибочное количество задач");
+        assertEquals(1, history.size(), "Ошибочное количество задач");
 
         manager.getSubTaskById(3);
         manager.getEpicById(2);
@@ -33,7 +34,7 @@ class InMemoryHistoryManagerTest {
         assertTrue(history1.contains(task1), "Не сохранена предидущая версия задачи и её данных");
         assertEquals(epic1SubTask1, history1.get(1), "В историю добавлена ошибочная задача");
         assertEquals(epic1, history1.get(2), "В историю добавлена ошибочная задача");
-        assertTrue(history1.size() == 3, "Ошибочное количество задач");
+        assertEquals(3, history1.size(), "Ошибочное количество задач");
 
         for (int i = 1; i < 5; i++) {
             manager.getTaskById(1);
@@ -41,6 +42,7 @@ class InMemoryHistoryManagerTest {
             manager.getEpicById(2);
         }
         List<Task> history2 = manager.getHistory();
-        assertTrue(history2.size() == 10, "количество задач превышает 10");
+        Assertions.assertEquals(3, history2.size(), "удаление задач со старым ID корректно");
+        Assertions.assertEquals(epic1, history2.getLast(), "В историю некорректно добавлена последняя открытая задача");
     }
 }

@@ -13,7 +13,7 @@ class ManagersTest {
     void testShouldReturnInitializedManagers() {
         InMemoryTaskManager manager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();
-        assertNotNull(manager, "Менеджер задачь не проинециализирован");
+        assertNotNull(manager, "Менеджер задач не проинециализирован");
         assertNotNull(historyManager, "Менеджер истории не проинециализирован");
     }
 }
