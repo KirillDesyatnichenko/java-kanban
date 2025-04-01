@@ -1,5 +1,3 @@
-package ru.yandex.practicum.TaskManager.Test;
-
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.TaskManager.Service.HistoryManager;
 import ru.yandex.practicum.TaskManager.Service.InMemoryTaskManager;
