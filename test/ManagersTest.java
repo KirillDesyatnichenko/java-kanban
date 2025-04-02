@@ -1,5 +1,3 @@
-package ru.yandex.practicum.TaskManager.Tests;
-
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.TaskManager.Service.HistoryManager;
 import ru.yandex.practicum.TaskManager.Service.InMemoryTaskManager;
@@ -13,7 +11,7 @@ class ManagersTest {
     void testShouldReturnInitializedManagers() {
         InMemoryTaskManager manager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();
-        assertNotNull(manager, "Менеджер задачь не проинециализирован");
+        assertNotNull(manager, "Менеджер задач не проинециализирован");
         assertNotNull(historyManager, "Менеджер истории не проинециализирован");
     }
 }

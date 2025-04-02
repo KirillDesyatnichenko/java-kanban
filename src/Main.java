@@ -9,62 +9,46 @@ import ru.yandex.practicum.TaskManager.Service.Managers;
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager manager =  Managers.getDefault();
+        InMemoryTaskManager manager = Managers.getDefault();
 
-        // Тестирование программы (В рамках ТЗ). Создаем задачи.
-        Task task1 = manager.createNewTask(new Task("Задача № 1", "Не свиснуть кукухой при написании фин.задания", 0, TaskStatus.NEW));
-        Task task2 = manager.createNewTask(new Task("Задача № 2", "Подготовить фин.задание и отправить на ревью", 0, TaskStatus.NEW));
+        // Реализация пользовательского сценария
+        System.out.println("Пользовательский сценарий");
+        manager.createNewEpic(new Epic("Эпическая задача № 1", "Помыть деда", 0, TaskStatus.NEW));
+        manager.createNewSubTask(new SubTask("Подзадача № 1", "Раздобыть воду", 0, TaskStatus.NEW, 1));
+        manager.createNewSubTask(new SubTask("Подзадача № 2", "Найти подходящего деда", 0, TaskStatus.NEW, 1));
+        manager.createNewSubTask(new SubTask("Подзадача № 3", "Обездвижить деда перед помывкой", 0, TaskStatus.NEW, 1));
+        manager.createNewEpic(new Epic("Эпическая задача № 2", "Убежать от полиции после мытья деда", 0, TaskStatus.NEW));
 
-        Epic epic1 = manager.createNewEpic(new Epic("Эпическая задача № 1", "Помыть деда", 0, TaskStatus.NEW));
-        SubTask epic1SubTask1 = manager.createNewSubTask(new SubTask("Подзадача № 1", "Раздобыть воду", 0, TaskStatus.NEW, 3));
-        SubTask epic1SubTask2 = manager.createNewSubTask(new SubTask("Подзадача № 2", "Найти подходящего деда", 0, TaskStatus.NEW, 3));
-
-        Epic epic2 = manager.createNewEpic(new Epic("Эпическая задача № 2", "Убежать от полиции после мытья деда", 0, TaskStatus.NEW));
-        SubTask epic2SubTask1 = manager.createNewSubTask(new SubTask("Подзадача № 1", "Неделю тренироваться бегать", 0, TaskStatus.NEW, 6));
-
-        // Распечатываем списки.
-        System.out.println("Добавление задач, эпиков и подзадач");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpic());
-        System.out.println(manager.getAllSubTasks());
-
-        // Изменение статусов задачи № 1, и подзадачи № 1 эпика № 1 и проверка
-        manager.updateTask(new Task("Задача № 1", "Не свиснуть кукухой при написании фин.задания", 1, TaskStatus.IN_PROGRESS));
-        manager.updateSubTask(new SubTask("Подзадача № 1", "Раздобыть воду", 4, TaskStatus.DONE, 3));
-
-        System.out.println("   ");
-        System.out.println("Изменены статусы задачи № 1, и подзадачи № 1 эпика № 1");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpic());
-        System.out.println(manager.getAllSubTasks());
-
-        // Удаление задачи № 2 и эпика № 2
-        manager.deleteTaskById(2);
-        manager.deleteEpicById(6);
-
-        System.out.println("   ");
-        System.out.println("Удалены задача 2 и эпик 2");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpic());
-        System.out.println(manager.getAllSubTasks());
-
-        System.out.println("   ");
-        manager.getTaskById(1);
-        manager.getSubTaskById(4);
-        manager.getEpicById(3);
-        manager.getTaskById(1);
-        manager.getSubTaskById(4);
-        manager.getEpicById(3);
-        manager.getTaskById(1);
-        manager.getSubTaskById(4);
-        manager.getEpicById(3);
-        manager.getTaskById(1);
-        manager.getSubTaskById(4);
-        manager.getEpicById(3);
+        // Добавление задач в историю
+        System.out.println("\nЗапросы задач\n");
+        System.out.println(manager.getEpicById(5));
+        System.out.println("\nИстория\n");
         System.out.println(manager.getHistory());
-        System.out.println("   ");
-        System.out.println("   ");
-        printAll(manager);
+        System.out.println(manager.getSubTaskById(3));
+        System.out.println("\nИстория\n");
+        System.out.println(manager.getHistory());
+        System.out.println(manager.getSubTaskById(2));
+        System.out.println("\nИстория\n");
+        System.out.println(manager.getHistory());
+        System.out.println(manager.getEpicById(1));
+        System.out.println("\nИстория\n");
+        System.out.println(manager.getHistory());
+        System.out.println(manager.getSubTaskById(4));
+        System.out.println("\nИстория\n");
+        System.out.println(manager.getHistory());
+        System.out.println(manager.getSubTaskById(2));
+        System.out.println("\nИстория\n");
+        System.out.println(manager.getHistory());
+
+        // Удаление субтаска с id 4 и проверка истории
+        manager.deleteSubTaskById(4);
+        System.out.println("\nИстория после удаления субтаска с id 4\n");
+        System.out.println(manager.getHistory());
+
+        // Удаление эпика с субтасками и проверка истории
+        manager.deleteEpicById(1);
+        System.out.println("\nИстория после удаления эпика с id 1 и его подзадачь\n");
+        System.out.println(manager.getHistory());
     }
 
     private static void printAll(InMemoryTaskManager manager) {

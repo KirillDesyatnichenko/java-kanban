@@ -8,14 +8,14 @@ public class Task {
     protected int id;
     protected TaskStatus status;
 
-    public Task (String taskName, String description, int id, TaskStatus status) {
+    public Task(String taskName, String description, int id, TaskStatus status) {
         this.taskName = taskName;
         this.description = description;
         this.id = id;
         this.status = status;
     }
 
-    public Task (String taskName, String description, TaskStatus status) {
+    public Task(String taskName, String description, TaskStatus status) {
         this.taskName = taskName;
         this.description = description;
         this.status = status;
