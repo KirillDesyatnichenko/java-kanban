@@ -29,7 +29,7 @@ public class Epic extends Task {
         }
     }
 
-    public void subTaskListCleaning () {
+    public void subTaskListCleaning() {
         subTaskList.clear();
     }
 
