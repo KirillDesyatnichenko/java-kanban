@@ -46,6 +46,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void tasksCleaning() {
+        for (Map.Entry<Integer, Task> entry : tasks.entrySet()) {
+            historyManager.remove(entry.getKey());
+        }
         tasks.clear();
     }
 
@@ -97,6 +100,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void epicCleaning() {
+        for (Map.Entry<Integer, Epic> entry : epics.entrySet()) {
+            historyManager.remove(entry.getKey());
+        }
+
+        for (Map.Entry<Integer, SubTask> entry : subTasks.entrySet()) {
+            historyManager.remove(entry.getKey());
+        }
         epics.clear();
         subTasks.clear();
     }
@@ -168,6 +178,10 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epics.values()) {
             epic.subTaskListCleaning();
             epic.setStatus(epic.statusCalculation());
+        }
+
+        for (Map.Entry<Integer, SubTask> entry : subTasks.entrySet()) {
+            historyManager.remove(entry.getKey());
         }
         subTasks.clear();
     }

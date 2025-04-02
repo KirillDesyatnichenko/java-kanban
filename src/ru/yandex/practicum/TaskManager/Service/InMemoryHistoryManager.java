@@ -39,7 +39,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         } else {
             oldTail.next = newNode;
         }
-        newNode.task = task;
         historyMap.put(task.getTaskId(), newNode);
     }
 
@@ -60,10 +59,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             prevNode.next = nextNode;
             nextNode.prev = prevNode;
         }
-
-        node.prev = null;
-        node.next = null;
-        node.task = null;
     }
 
     @Override
