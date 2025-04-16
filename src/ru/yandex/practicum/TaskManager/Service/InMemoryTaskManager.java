@@ -253,4 +253,29 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean containsSubTasks(int id) {
         return subTasks.containsKey(id);
     }
+
+    protected  void setTask(int id, Task task) {
+        tasks.put(id, task);
+    }
+
+    protected  void setEpic(int id, Epic epic) {
+        epics.put(id, epic);
+    }
+
+    protected void setSubTask(int id, SubTask subTask) {
+        subTasks.put(id, subTask);
+    }
+
+    protected void addAllSubtasksInEpics() {
+        ArrayList<SubTask> allSubTasks = getAllSubTasks();
+        for (SubTask subTask : allSubTasks) {
+            Epic epic = epics.get(subTask.getEpicId());
+            ArrayList<SubTask> subTaskList = epic.getSubTasks();
+
+            if (!subTaskList.contains(subTask)) {
+                epic.addNewSubTask(subTask);
+                epic.setStatus(epic.statusCalculation());
+            }
+        }
+    }
 }
