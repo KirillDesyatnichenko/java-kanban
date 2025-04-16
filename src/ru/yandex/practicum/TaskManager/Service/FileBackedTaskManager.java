@@ -19,20 +19,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             wr.write("id,type,name,status,description,epicId" + "\n");
 
             for (Task task : getAllTasks()) {
-                wr.write(TaskToString(task) + "\n");
+                wr.write(taskToString(task) + "\n");
             }
             for (Epic epic : getAllEpic()) {
-                wr.write(TaskToString(epic) + "\n");
+                wr.write(taskToString(epic) + "\n");
             }
             for (SubTask subTask : getAllSubTasks()) {
-                wr.write(TaskToString(subTask) + "\n");
+                wr.write(taskToString(subTask) + "\n");
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при записи файла.");
         }
     }
 
-    private String TaskToString(Task task) {
+    private String taskToString(Task task) {
         String typeTask = task.getClass().getSimpleName();
         String value;
 
@@ -84,22 +84,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTaskManager loadFromFile(Path path) throws IOException {
+    public static FileBackedTaskManager loadFromFile(Path path) {
         FileBackedTaskManager fileBackedTasksManager = new FileBackedTaskManager(path);
-        try { List<String> lines = Files.readAllLines(path);
-        for (String line : lines) {
-            if (!line.isBlank() && !line.equals("id,type,name,status,description,epicId")) {
-                Task task = fromString(line);
+        try {
+            List<String> lines = Files.readAllLines(path);
+                for (String line : lines) {
+                    if (!line.isBlank() && !line.equals("id,type,name,status,description,epicId")) {
+                    Task task = fromString(line);
 
-                if (task instanceof Epic) {
-                    fileBackedTasksManager.setEpic(task.getTaskId(), (Epic) task);
-                } else if (task instanceof SubTask) {
-                    fileBackedTasksManager.setSubTask(task.getTaskId(), (SubTask) task);
-                } else {
-                    fileBackedTasksManager.setTask(task.getTaskId(), task);
+                    if (task instanceof Epic) {
+                        fileBackedTasksManager.setEpic(task.getTaskId(), (Epic) task);
+                    } else if (task instanceof SubTask) {
+                        fileBackedTasksManager.setSubTask(task.getTaskId(), (SubTask) task);
+                    } else {
+                        fileBackedTasksManager.setTask(task.getTaskId(), task);
+                    }
                 }
             }
-        }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при чтении файла.");
         }
