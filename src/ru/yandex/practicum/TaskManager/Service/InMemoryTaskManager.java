@@ -5,10 +5,7 @@ import ru.yandex.practicum.TaskManager.Model.SubTask;
 import ru.yandex.practicum.TaskManager.Model.Task;
 import ru.yandex.practicum.TaskManager.Model.TaskStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
@@ -19,6 +16,16 @@ public class InMemoryTaskManager implements TaskManager {
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int idGenerator() {
+        List<Integer> allIds = new ArrayList<>();
+        allIds.addAll(tasks.keySet());
+        allIds.addAll(epics.keySet());
+        allIds.addAll(subTasks.keySet());
+
+        if (allIds.isEmpty()) {
+            return 1;
+        }
+
+        id = Collections.max(allIds);
         id++;
         return id;
     }
@@ -252,5 +259,30 @@ public class InMemoryTaskManager implements TaskManager {
 
     public boolean containsSubTasks(int id) {
         return subTasks.containsKey(id);
+    }
+
+    protected  void setTask(int id, Task task) {
+        tasks.put(id, task);
+    }
+
+    protected  void setEpic(int id, Epic epic) {
+        epics.put(id, epic);
+    }
+
+    protected void setSubTask(int id, SubTask subTask) {
+        subTasks.put(id, subTask);
+    }
+
+    protected void addAllSubtasksInEpics() {
+        ArrayList<SubTask> allSubTasks = getAllSubTasks();
+        for (SubTask subTask : allSubTasks) {
+            Epic epic = epics.get(subTask.getEpicId());
+            ArrayList<SubTask> subTaskList = epic.getSubTasks();
+
+            if (!subTaskList.contains(subTask)) {
+                epic.addNewSubTask(subTask);
+                epic.setStatus(epic.statusCalculation());
+            }
+        }
     }
 }
