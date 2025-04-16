@@ -8,13 +8,13 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private Path path;
+    private final Path path;
 
     public FileBackedTaskManager(Path path) {
         this.path = path;
     }
 
-    public void save() {
+    private void save() {
         try (FileWriter wr = new FileWriter(String.valueOf(path))) {
             wr.write("id,type,name,status,description,epicId" + "\n");
 

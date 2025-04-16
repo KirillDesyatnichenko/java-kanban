@@ -5,10 +5,7 @@ import ru.yandex.practicum.TaskManager.Model.SubTask;
 import ru.yandex.practicum.TaskManager.Model.Task;
 import ru.yandex.practicum.TaskManager.Model.TaskStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
@@ -19,6 +16,16 @@ public class InMemoryTaskManager implements TaskManager {
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int idGenerator() {
+        List<Integer> allIds = new ArrayList<>();
+        allIds.addAll(tasks.keySet());
+        allIds.addAll(epics.keySet());
+        allIds.addAll(subTasks.keySet());
+
+        if (allIds.isEmpty()) {
+            return 1;
+        }
+
+        id = Collections.max(allIds);
         id++;
         return id;
     }

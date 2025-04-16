@@ -31,13 +31,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testEmptyFileLoadAndSave() throws IOException {
-        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        loadedManager.save();
-        assertTrue(Files.exists(tempPath), "Файл должен существовать после сохранения.");
-        long size = Files.size(tempPath);
-        assertTrue(size > 0, "Размер файла должен быть больше нуля.");
-
+    void testEmptyFileLoad() throws IOException {
         FileBackedTaskManager loadedManager2 = FileBackedTaskManager.loadFromFile(tempPath);
         assertEquals(Collections.emptyList(), loadedManager2.getAllTasks(), "Должен вернуть пустой список задач.");
         assertEquals(Collections.emptyList(), loadedManager2.getAllEpic(), "Должен вернуть пустой список эпиков.");
