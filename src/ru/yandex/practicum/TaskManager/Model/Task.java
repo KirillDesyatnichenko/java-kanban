@@ -1,5 +1,8 @@
 package ru.yandex.practicum.TaskManager.Model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -7,6 +10,26 @@ public class Task {
     protected String description;
     protected int id;
     protected TaskStatus status;
+    protected Duration duration = Duration.ZERO;
+    protected LocalDateTime startTime;
+
+
+    public Task(String taskName, String description, int id, TaskStatus status, Duration duration, LocalDateTime startTime) {
+        this.taskName = taskName;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String taskName, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
+        this.taskName = taskName;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
 
     public Task(String taskName, String description, int id, TaskStatus status) {
         this.taskName = taskName;
@@ -19,6 +42,48 @@ public class Task {
         this.taskName = taskName;
         this.description = description;
         this.status = status;
+    }
+
+    public boolean timeIntersection(Task task) {
+        LocalDateTime start1 = this.getStartTime();
+        LocalDateTime end1 = this.getEndTime();
+
+        LocalDateTime start2 = task.getStartTime();
+        LocalDateTime end2 = task.getEndTime();
+
+        if (start1 == null || end1 == null || start2 == null || end2 == null) {
+            return false;
+        }
+
+        return !(start1.isAfter(end2) || start2.isAfter(end1));
+    }
+
+    public void setDurationOfMinutes(int minutes) {
+        this.duration = Duration.ofMinutes(minutes);
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setStringStartTime(String startTime) {
+        this.startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
     }
 
     public TaskStatus getStatus() {

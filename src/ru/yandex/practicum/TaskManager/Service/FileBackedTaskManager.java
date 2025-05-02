@@ -5,6 +5,9 @@ import ru.yandex.practicum.TaskManager.Model.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -16,7 +19,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (FileWriter wr = new FileWriter(String.valueOf(path))) {
-            wr.write("id,type,name,status,description,epicId" + "\n");
+            wr.write("id,type,name,status,description,duration,startTime,epicId" + "\n");
 
             for (Task task : getAllTasks()) {
                 wr.write(taskToString(task) + "\n");
@@ -38,13 +41,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         if (typeTask.equals("SubTask")) {
             SubTask subTask = (SubTask) task;
-            value = String.format("%d,%s,%s,%s,%s,%d",
+            value = String.format("%d,%s,%s,%s,%s,%d,%s,%d",
                     subTask.getTaskId(),
                     typeTask.toUpperCase(),
                     subTask.getTaskName(),
                     subTask.getStatus(),
                     subTask.getDescription(),
+                    (int) task.getDuration().toMinutes(),
+                    task.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                     subTask.getEpicId()
+            );
+        } else if (typeTask.equals("Task")) {
+            value = String.format("%d,%s,%s,%s,%s,%d,%s",
+                    task.getTaskId(),
+                    typeTask.toUpperCase(),
+                    task.getTaskName(),
+                    task.getStatus(),
+                    task.getDescription(),
+                    (int) task.getDuration().toMinutes(),
+                    task.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
             );
         } else {
             value = String.format("%d,%s,%s,%s,%s",
@@ -69,16 +84,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String description = values[4];
 
         if (TypeOfTasks.valueOf(type).equals(TypeOfTasks.TASK)) {
-            return new Task(name, description, id, status);
+            Duration duration = Duration.ofMinutes(Integer.parseInt(values[5]));
+            LocalDateTime startTime = LocalDateTime.parse(values[6], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            return new Task(name, description, id, status, duration, startTime);
         }
 
         if (TypeOfTasks.valueOf(type).equals(TypeOfTasks.EPIC)) {
-            return new Epic(name, description, id, status);
+            return new Epic(name, description, id);
         }
 
         if (TypeOfTasks.valueOf(type).equals(TypeOfTasks.SUBTASK)) {
-            int idEpic = Integer.parseInt(values[5]);
-            return new SubTask(name, description, id, status, idEpic);
+            Duration duration = Duration.ofMinutes(Integer.parseInt(values[5]));
+            LocalDateTime startTime = LocalDateTime.parse(values[6], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            int idEpic = Integer.parseInt(values[7]);
+            return new SubTask(name, description, id, status, duration, startTime, idEpic);
         } else {
             throw new IllegalArgumentException("Тип задачи не поддерживается");
         }
@@ -89,7 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             List<String> lines = Files.readAllLines(path);
                 for (String line : lines) {
-                    if (!line.isBlank() && !line.equals("id,type,name,status,description,epicId")) {
+                    if (!line.isBlank() && !line.equals("id,type,name,status,description,duration,startTime,epicId")) {
                     Task task = fromString(line);
 
                     if (task instanceof Epic) {
@@ -182,7 +201,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.updateSubTask(subTask);
         save();
     }
-
-    // Реализовывать пользовательский сценарий не стал,
-    // так как он уже реализован в тестах FileBackedTaskManagerTest в разной вариации.
 }
