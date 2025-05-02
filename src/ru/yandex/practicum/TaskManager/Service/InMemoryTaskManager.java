@@ -34,7 +34,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public boolean checkingIntersection (Task task) {
+    public boolean checkingIntersection(Task task) {
         return prioritizedTasks.stream()
                 .anyMatch(existingTask -> existingTask.timeIntersection(task));
     }
