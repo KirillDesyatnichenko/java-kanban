@@ -5,6 +5,9 @@ import ru.yandex.practicum.TaskManager.Model.TaskStatus;
 import ru.yandex.practicum.TaskManager.Service.InMemoryTaskManager;
 import ru.yandex.practicum.TaskManager.Service.Managers;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 
 public class Main {
 
@@ -13,11 +16,11 @@ public class Main {
 
         // Реализация пользовательского сценария
         System.out.println("Пользовательский сценарий");
-        manager.createNewEpic(new Epic("Эпическая задача № 1", "Помыть деда", 0, TaskStatus.NEW));
-        manager.createNewSubTask(new SubTask("Подзадача № 1", "Раздобыть воду", 0, TaskStatus.NEW, 1));
-        manager.createNewSubTask(new SubTask("Подзадача № 2", "Найти подходящего деда", 0, TaskStatus.NEW, 1));
-        manager.createNewSubTask(new SubTask("Подзадача № 3", "Обездвижить деда перед помывкой", 0, TaskStatus.NEW, 1));
-        manager.createNewEpic(new Epic("Эпическая задача № 2", "Убежать от полиции после мытья деда", 0, TaskStatus.NEW));
+        manager.createNewEpic(new Epic("Эпическая задача № 1", "Помыть деда", 0));
+        manager.createNewSubTask(new SubTask("Подзадача № 1", "Раздобыть воду", 0, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 5, 10, 0), 1));
+        manager.createNewSubTask(new SubTask("Подзадача № 2", "Найти подходящего деда", 0, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 12, 10, 0), 1));
+        manager.createNewSubTask(new SubTask("Подзадача № 3", "Обездвижить деда перед помывкой", 0, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 1, 10, 0), 1));
+        manager.createNewEpic(new Epic("Эпическая задача № 2", "Убежать от полиции после мытья деда", 0));
 
         // Добавление задач в историю
         System.out.println("\nЗапросы задач\n");
@@ -47,7 +50,7 @@ public class Main {
 
         // Удаление эпика с субтасками и проверка истории
         manager.deleteEpicById(1);
-        System.out.println("\nИстория после удаления эпика с id 1 и его подзадачь\n");
+        System.out.println("\nИстория после удаления эпика с id 1 и его подзадач\n");
         System.out.println(manager.getHistory());
     }
 

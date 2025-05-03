@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +43,7 @@ class FileBackedTaskManagerTest {
     @Test
     void testCreateAndSaveSingleTask() throws IOException {
         FileBackedTaskManager loadedManager1 = FileBackedTaskManager.loadFromFile(tempPath);
-        Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW);
+        Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         loadedManager1.createNewTask(task);
 
         FileBackedTaskManager loadedManager2 = FileBackedTaskManager.loadFromFile(tempPath);
@@ -55,8 +57,8 @@ class FileBackedTaskManagerTest {
     @Test
     void testMultipleTasksCreationAndLoading() throws IOException {
         FileBackedTaskManager loadedManager1 = FileBackedTaskManager.loadFromFile(tempPath);
-        Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.IN_PROGRESS);
-        Task task2 = new Task("Задача №2", "Описание второй задачи.", 2, TaskStatus.DONE);
+        Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.IN_PROGRESS, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
+        Task task2 = new Task("Задача №2", "Описание второй задачи.", 2, TaskStatus.DONE, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 3, 10, 0));
         loadedManager1.createNewTask(task1);
         loadedManager1.createNewTask(task2);
 
@@ -70,7 +72,7 @@ class FileBackedTaskManagerTest {
     @Test
     void testDeleteTaskAndSave() throws IOException {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW);
+        Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         loadedManager.createNewTask(task);
         loadedManager.deleteTaskById(task.getTaskId());
 
@@ -83,7 +85,7 @@ class FileBackedTaskManagerTest {
     @Test
     void testUpdateTaskAndSave() throws IOException {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW);
+        Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         loadedManager.createNewTask(task);
         task.setStatus(TaskStatus.DONE);
         loadedManager.updateTask(task);
@@ -98,9 +100,9 @@ class FileBackedTaskManagerTest {
     @Test
     void testAddSubTaskAndSave() throws IOException {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        Epic epic = new Epic("Эпик №1", "Описание первого эпика.", 1, TaskStatus.NEW);
+        Epic epic = new Epic("Эпик №1", "Описание первого эпика.", 1);
         loadedManager.createNewEpic(epic);
-        SubTask subTask = new SubTask("Субзадача №1", "Описание первой субзадачи.", 2, TaskStatus.NEW, epic.getTaskId());
+        SubTask subTask = new SubTask("Субзадача №1", "Описание первой субзадачи.", 2, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0), epic.getTaskId());
         loadedManager.createNewSubTask(subTask);
 
         FileBackedTaskManager loadedManager2 = FileBackedTaskManager.loadFromFile(tempPath);
@@ -115,9 +117,9 @@ class FileBackedTaskManagerTest {
     @Test
     void testRemoveSubTaskAndSave() throws IOException {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        Epic epic = new Epic("Эпик №1", "Описание первого эпика.", 1, TaskStatus.NEW);
+        Epic epic = new Epic("Эпик №1", "Описание первого эпика.", 1);
         loadedManager.createNewEpic(epic);
-        SubTask subTask = new SubTask("Субзадача №1", "Описание первой субзадачи.", 2, TaskStatus.NEW, epic.getTaskId());
+        SubTask subTask = new SubTask("Субзадача №1", "Описание первой субзадачи.", 2, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0), epic.getTaskId());
         loadedManager.createNewSubTask(subTask);
         loadedManager.deleteSubTaskById(subTask.getTaskId());
 
@@ -130,8 +132,8 @@ class FileBackedTaskManagerTest {
     @Test
     void testMultipleEpicsCreationAndSaving() throws IOException {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        Epic epic1 = new Epic("Эпик №1", "Описание первого эпика.", 1, TaskStatus.NEW);
-        Epic epic2 = new Epic("Эпик №2", "Описание второго эпика.", 2, TaskStatus.IN_PROGRESS);
+        Epic epic1 = new Epic("Эпик №1", "Описание первого эпика.", 1);
+        Epic epic2 = new Epic("Эпик №2", "Описание второго эпика.", 2);
         loadedManager.createNewEpic(epic1);
         loadedManager.createNewEpic(epic2);
 
@@ -146,8 +148,8 @@ class FileBackedTaskManagerTest {
     @Test
     void testCleanUpAllTasksAndSave() throws IOException {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW);
-        Task task2 = new Task("Задача №2", "Описание второй задачи.", 2, TaskStatus.DONE);
+        Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
+        Task task2 = new Task("Задача №2", "Описание второй задачи.", 2, TaskStatus.DONE, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 3, 10, 0));
         loadedManager.createNewTask(task1);
         loadedManager.createNewTask(task2);
         loadedManager.tasksCleaning();
@@ -161,9 +163,9 @@ class FileBackedTaskManagerTest {
     @Test
     void testFullStateRestoration() throws IOException {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
-        Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW);
-        Epic epic1 = new Epic("Эпик №1", "Описание первого эпика.", 2, TaskStatus.IN_PROGRESS);
-        SubTask subTask1 = new SubTask("Субзадача №1", "Описание первой субзадачи.", 3, TaskStatus.DONE, epic1.getTaskId());
+        Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
+        Epic epic1 = new Epic("Эпик №1", "Описание первого эпика.", 2);
+        SubTask subTask1 = new SubTask("Субзадача №1", "Описание первой субзадачи.", 3, TaskStatus.DONE, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 3, 10, 0), epic1.getTaskId());
         loadedManager.createNewTask(task1);
         loadedManager.createNewEpic(epic1);
         loadedManager.createNewSubTask(subTask1);

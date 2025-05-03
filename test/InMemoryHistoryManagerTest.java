@@ -7,6 +7,8 @@ import ru.yandex.practicum.TaskManager.Model.TaskStatus;
 import ru.yandex.practicum.TaskManager.Service.InMemoryTaskManager;
 import ru.yandex.practicum.TaskManager.Service.Managers;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,9 +18,9 @@ class InMemoryHistoryManagerTest {
     @Test
     void testAddAndGetTasksFromHistory() {
         InMemoryTaskManager manager = Managers.getDefault();
-        Task task1 = manager.createNewTask(new Task("Task 1", "T", 1, TaskStatus.NEW));
-        Epic epic1 = manager.createNewEpic(new Epic("Epic 1", "E", 2, TaskStatus.NEW));
-        SubTask epic1SubTask1 = manager.createNewSubTask(new SubTask("Subtask 1", "S1", 3, TaskStatus.NEW, 2));
+        Task task1 = manager.createNewTask(new Task("Task 1", "T", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0)));
+        Epic epic1 = manager.createNewEpic(new Epic("Epic 1", "E", 2));
+        SubTask epic1SubTask1 = manager.createNewSubTask(new SubTask("Subtask 1", "S1", 3, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 3, 10, 0), 2));
 
         manager.getTaskById(1);
         List<Task> history = manager.getHistory();
