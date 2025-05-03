@@ -133,7 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (Integer id : subTasks.keySet()) {
             historyManager.remove(id);
-            SubTask subTaskToRemove = getSubTaskById(id);
+            SubTask subTaskToRemove = subTasks.get(id);
             prioritizedTasks.remove(subTaskToRemove);
         }
         epics.clear();
@@ -217,7 +217,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (Integer id : subTasks.keySet()) {
             historyManager.remove(id);
-            SubTask subTaskToRemove = getSubTaskById(id);
+            SubTask subTaskToRemove = subTasks.get(id);
             prioritizedTasks.remove(subTaskToRemove);
         }
         subTasks.clear();
