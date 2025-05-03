@@ -17,22 +17,6 @@ public class Epic extends Task {
         super(taskName, description, TaskStatus.NEW);
     }
 
-
-    @Override
-    public boolean timeIntersection(Task task) {
-        LocalDateTime start1 = this.getStartTime();
-        LocalDateTime end1 = this.getEndTime();
-
-        LocalDateTime start2 = task.getStartTime();
-        LocalDateTime end2 = task.getEndTime();
-
-        if (start1 == null || end1 == null || start2 == null || end2 == null) {
-            return false;
-        }
-
-        return !(start1.isAfter(end2) || start2.isAfter(end1));
-    }
-
     public ArrayList<SubTask> getSubTasks() {
         return new ArrayList<>(subTaskList);
     }
@@ -103,13 +87,9 @@ public class Epic extends Task {
                 }
             }
 
-            if (earliestStartTime != null) {
-                setStartTime(earliestStartTime);
-            }
+            setStartTime(earliestStartTime);
+            this.endTime = latestEndTime;
 
-            if (latestEndTime != null) {
-                this.endTime = latestEndTime;
-            }
         } else {
             this.startTime = null;
             this.endTime = null;
