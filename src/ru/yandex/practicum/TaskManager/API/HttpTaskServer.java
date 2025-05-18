@@ -17,11 +17,11 @@ public class HttpTaskServer {
     }
 
 
-
     public static void main(String[] args) {
         server.start();
 
     }
+
     public void start() {
         try {
             server = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
