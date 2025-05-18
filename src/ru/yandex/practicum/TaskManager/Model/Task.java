@@ -1,17 +1,19 @@
 package ru.yandex.practicum.TaskManager.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
-    protected String taskName;
-    protected String description;
-    protected int id;
-    protected TaskStatus status;
-    protected Duration duration = Duration.ZERO;
-    protected LocalDateTime startTime;
+    @SerializedName("taskName") protected String taskName;
+    @SerializedName("description") protected String description;
+    @SerializedName("id") protected int id;
+    @SerializedName("status") protected TaskStatus status;
+    @SerializedName("duration") protected Duration duration = Duration.ZERO;
+    @SerializedName("startTime") protected LocalDateTime startTime;
 
 
     public Task(String taskName, String description, int id, TaskStatus status, Duration duration, LocalDateTime startTime) {

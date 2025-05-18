@@ -25,7 +25,7 @@ class InMemoryHistoryManagerTest {
         manager.getTaskById(1);
         List<Task> history = manager.getHistory();
         assertNotNull(history, "Список истории не инициализирован");
-        assertEquals(task1, history.getFirst(), "В историю добавлена ошибочная задача");
+        assertEquals(task1, history.get(0), "В историю добавлена ошибочная задача");
         assertEquals(1, history.size(), "Ошибочное количество задач");
 
         manager.getSubTaskById(3);
@@ -43,6 +43,6 @@ class InMemoryHistoryManagerTest {
         }
         List<Task> history2 = manager.getHistory();
         Assertions.assertEquals(3, history2.size(), "удаление задач со старым ID корректно");
-        Assertions.assertEquals(epic1, history2.getLast(), "В историю некорректно добавлена последняя открытая задача");
+        Assertions.assertEquals(epic1, history2.get(history2.size() - 1), "В историю некорректно добавлена последняя открытая задача");
     }
 }
