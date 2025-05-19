@@ -27,7 +27,7 @@ public interface TaskManager {
 
     void epicCleaning();
 
-    Task getEpicById(int id);
+    Epic getEpicById(int id);
 
     void deleteEpicById(int id);
 
@@ -49,4 +49,6 @@ public interface TaskManager {
     List<SubTask> getSubTasksByEpicId(int epicId);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }

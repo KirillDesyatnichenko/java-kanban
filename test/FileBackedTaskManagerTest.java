@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 class FileBackedTaskManagerTest {
-    String pathStr = "C:\\Users\\Rippe\\IdeaProjects\\myProjects\\java-kanban\\src\\Test.crv";
+    String pathStr = "src/Test.csv";
     private final Path tempPath = Paths.get(Paths.get(pathStr).toUri());
 
     @BeforeEach
@@ -33,7 +33,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testEmptyFileLoad() throws IOException {
+    void testEmptyFileLoad() {
         FileBackedTaskManager loadedManager2 = FileBackedTaskManager.loadFromFile(tempPath);
         assertEquals(Collections.emptyList(), loadedManager2.getAllTasks(), "Должен вернуть пустой список задач.");
         assertEquals(Collections.emptyList(), loadedManager2.getAllEpic(), "Должен вернуть пустой список эпиков.");
@@ -41,7 +41,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testCreateAndSaveSingleTask() throws IOException {
+    void testCreateAndSaveSingleTask() {
         FileBackedTaskManager loadedManager1 = FileBackedTaskManager.loadFromFile(tempPath);
         Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         loadedManager1.createNewTask(task);
@@ -50,12 +50,12 @@ class FileBackedTaskManagerTest {
 
         List<Task> allTasks = loadedManager2.getAllTasks();
         assertEquals(1, allTasks.size(), "Ожидается одна задача после загрузки.");
-        assertEquals(task.getTaskName(), allTasks.getFirst().getTaskName(), "Название задачи должно совпадать.");
-        assertEquals(task.getDescription(), allTasks.getFirst().getDescription(), "Описание задачи должно совпадать.");
+        assertEquals(task.getTaskName(), allTasks.get(0).getTaskName(), "Название задачи должно совпадать.");
+        assertEquals(task.getDescription(), allTasks.get(0).getDescription(), "Описание задачи должно совпадать.");
     }
 
     @Test
-    void testMultipleTasksCreationAndLoading() throws IOException {
+    void testMultipleTasksCreationAndLoading() {
         FileBackedTaskManager loadedManager1 = FileBackedTaskManager.loadFromFile(tempPath);
         Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.IN_PROGRESS, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         Task task2 = new Task("Задача №2", "Описание второй задачи.", 2, TaskStatus.DONE, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 3, 10, 0));
@@ -70,7 +70,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testDeleteTaskAndSave() throws IOException {
+    void testDeleteTaskAndSave() {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
         Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         loadedManager.createNewTask(task);
@@ -83,7 +83,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testUpdateTaskAndSave() throws IOException {
+    void testUpdateTaskAndSave() {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
         Task task = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         loadedManager.createNewTask(task);
@@ -94,11 +94,11 @@ class FileBackedTaskManagerTest {
 
         List<Task> allTasks = loadedManager2.getAllTasks();
         assertEquals(1, allTasks.size(), "Ожидается одна задача после обновления и загрузки.");
-        assertEquals(TaskStatus.DONE, allTasks.getFirst().getStatus(), "Статус задачи должен быть обновлен.");
+        assertEquals(TaskStatus.DONE, allTasks.get(0).getStatus(), "Статус задачи должен быть обновлен.");
     }
 
     @Test
-    void testAddSubTaskAndSave() throws IOException {
+    void testAddSubTaskAndSave() {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
         Epic epic = new Epic("Эпик №1", "Описание первого эпика.", 1);
         loadedManager.createNewEpic(epic);
@@ -111,11 +111,11 @@ class FileBackedTaskManagerTest {
         List<SubTask> subTasks = loadedManager2.getAllSubTasks();
         assertEquals(1, epics.size(), "Ожидается один эпик после загрузки.");
         assertEquals(1, subTasks.size(), "Ожидается одна субзадача после загрузки.");
-        assertEquals(subTask.getTaskName(), subTasks.getFirst().getTaskName(), "Название субзадачи должно совпасть.");
+        assertEquals(subTask.getTaskName(), subTasks.get(0).getTaskName(), "Название субзадачи должно совпасть.");
     }
 
     @Test
-    void testRemoveSubTaskAndSave() throws IOException {
+    void testRemoveSubTaskAndSave() {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
         Epic epic = new Epic("Эпик №1", "Описание первого эпика.", 1);
         loadedManager.createNewEpic(epic);
@@ -130,7 +130,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testMultipleEpicsCreationAndSaving() throws IOException {
+    void testMultipleEpicsCreationAndSaving() {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
         Epic epic1 = new Epic("Эпик №1", "Описание первого эпика.", 1);
         Epic epic2 = new Epic("Эпик №2", "Описание второго эпика.", 2);
@@ -146,7 +146,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testCleanUpAllTasksAndSave() throws IOException {
+    void testCleanUpAllTasksAndSave() {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
         Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         Task task2 = new Task("Задача №2", "Описание второй задачи.", 2, TaskStatus.DONE, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 3, 10, 0));
@@ -161,7 +161,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void testFullStateRestoration() throws IOException {
+    void testFullStateRestoration() {
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempPath);
         Task task1 = new Task("Задача №1", "Описание первой задачи.", 1, TaskStatus.NEW, Duration.ofMinutes(60), LocalDateTime.of(2025, 5, 2, 10, 0));
         Epic epic1 = new Epic("Эпик №1", "Описание первого эпика.", 2);
