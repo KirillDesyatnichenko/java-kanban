@@ -12,7 +12,7 @@ public class HttpTaskServer {
     private static HttpServer server;
     private static FileBackedTaskManager taskManager;
 
-    public HttpTaskServer(FileBackedTaskManager taskManager, InMemoryHistoryManager historyTaskManager) {
+    public HttpTaskServer(FileBackedTaskManager taskManager) {
         HttpTaskServer.taskManager = taskManager;
     }
 

@@ -12,7 +12,6 @@ import ru.yandex.practicum.TaskManager.Model.SubTask;
 import ru.yandex.practicum.TaskManager.Model.Task;
 import ru.yandex.practicum.TaskManager.Model.TaskStatus;
 import ru.yandex.practicum.TaskManager.Service.FileBackedTaskManager;
-import ru.yandex.practicum.TaskManager.Service.InMemoryHistoryManager;
 import ru.yandex.practicum.TaskManager.Service.Managers;
 
 import java.lang.reflect.Type;
@@ -29,8 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HttpTaskServerTest {
     private static final FileBackedTaskManager taskManager = Managers.getDefaultFileManager();
-    private static final InMemoryHistoryManager historyTaskManager = Managers.getDefaultHistory();
-    HttpTaskServer taskServer = new HttpTaskServer(taskManager, historyTaskManager);
+    HttpTaskServer taskServer = new HttpTaskServer(taskManager);
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(Duration.class, new DurationAdapter())

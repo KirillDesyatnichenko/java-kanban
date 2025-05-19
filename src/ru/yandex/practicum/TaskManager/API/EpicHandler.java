@@ -43,14 +43,20 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                     String response = gson.toJson(subtasks);
                     sendText(exchange, response);
                 }
-
             } else if ("POST".equals(requestMethod)) {
-                InputStreamReader reader = new InputStreamReader(exchange.getRequestBody());
-                Epic epic = gson.fromJson(reader, Epic.class);
-                Epic createdEpic = taskManager.createNewEpic(epic);
-                String response = gson.toJson(createdEpic);
-                sendText(exchange, response);
-
+                if (exchange.getRequestURI().getPath().equals("/epics")) {
+                    InputStreamReader reader = new InputStreamReader(exchange.getRequestBody());
+                    Epic epic = gson.fromJson(reader, Epic.class);
+                    Epic createdEpic = taskManager.createNewEpic(epic);
+                    String response = gson.toJson(createdEpic);
+                    sendText(exchange, response);
+                } else if (path.matches("/epics/[0-9]+")) {
+                    InputStreamReader isr = new InputStreamReader(exchange.getRequestBody());
+                    Epic updateEpic = gson.fromJson(isr, Epic.class);
+                    taskManager.updateEpic(updateEpic);
+                    exchange.sendResponseHeaders(201, -1);
+                    exchange.getResponseBody().close();
+                }
             } else if ("DELETE".equals(requestMethod)) {
                 String idStr = path.substring("/epics/".length());
                 int epicId = Integer.parseInt(idStr);

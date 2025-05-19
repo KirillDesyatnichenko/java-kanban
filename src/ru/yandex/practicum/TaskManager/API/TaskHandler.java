@@ -20,6 +20,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
+        String path = exchange.getRequestURI().getPath();
 
         try {
             if ("GET".equals(requestMethod)) {
@@ -41,7 +42,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                     Task createdTask = taskManager.createNewTask(task);
                     String response = gson.toJson(createdTask);
                     sendText(exchange, response);
-                } else {
+                } else if (path.matches("/tasks/[0-9]+")) {
                     InputStreamReader isr = new InputStreamReader(exchange.getRequestBody());
                     Task updateTask = gson.fromJson(isr, Task.class);
                     taskManager.updateTask(updateTask);
