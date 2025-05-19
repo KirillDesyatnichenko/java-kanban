@@ -1,24 +1,26 @@
 package ru.yandex.practicum.TaskManager.API;
 
 import com.sun.net.httpserver.HttpServer;
-import ru.yandex.practicum.TaskManager.Service.FileBackedTaskManager;
+import ru.yandex.practicum.TaskManager.Service.Managers;
+import ru.yandex.practicum.TaskManager.Service.TaskManager;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;
-    private static HttpServer server;
-    private static FileBackedTaskManager taskManager;
+    private HttpServer server;
+    private final TaskManager taskManager;
 
-    public HttpTaskServer(FileBackedTaskManager taskManager) {
-        HttpTaskServer.taskManager = taskManager;
+    public HttpTaskServer(TaskManager taskManager) {
+        this.taskManager = taskManager;
     }
 
 
     public static void main(String[] args) {
-        server.start();
-
+        TaskManager taskManager = Managers.getDefaultFileManager();
+        HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
+        httpTaskServer.start();
     }
 
     public void start() {

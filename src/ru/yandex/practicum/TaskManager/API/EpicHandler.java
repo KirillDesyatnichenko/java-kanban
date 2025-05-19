@@ -3,17 +3,17 @@ package ru.yandex.practicum.TaskManager.API;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.practicum.TaskManager.Model.*;
-import ru.yandex.practicum.TaskManager.Service.FileBackedTaskManager;
 import ru.yandex.practicum.TaskManager.Service.NotFoundException;
+import ru.yandex.practicum.TaskManager.Service.TaskManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
 public class EpicHandler extends BaseHttpHandler implements HttpHandler {
-    private final FileBackedTaskManager taskManager;
+    private final TaskManager taskManager;
 
-    public EpicHandler(FileBackedTaskManager taskManager) {
+    public EpicHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
     }
 
